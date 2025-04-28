@@ -8,6 +8,8 @@ The goal is to use these phase masks in **metasurfaces** for **holographic proje
 This repository contains:
 - `phase_mask_training.ipynb`: Train PhaseMaskNet on cross-sectional slices.
 - `phase_mask_inference.ipynb`: Load a trained model and generate phase masks without retraining.
+- `phase_mask_multilayer_training.ipynb`: Train a model to predict a single phase mask for multi-layer holographic projection.
+- `phase_mask_multilayer_inference.ipynb`: Load a trained multi-layer model and run predictions.
 
 ---
 
@@ -48,6 +50,22 @@ This repository contains:
 - Run predictions to generate corresponding phase masks.
 
 This allows generating new phase masks without retraining the model.
+
+---
+
+## Multi-Layer Phase Mask Prediction
+In addition to single-slice phase mask generation, this repository also supports **multi-layer phase mask prediction**.
+
+- `phase_mask_multilayer_training.ipynb`:  
+  Trains a model to predict a **single phase mask** that reconstructs **three target cross-sections** at different z-heights.
+  
+- `phase_mask_multilayer_inference.ipynb`:  
+  Loads the trained model and predicts a phase mask designed for **multi-layer projection**.
+
+**Important Notes:**
+- The model still uses **2D convolutions** but is trained to satisfy **multi-depth projections**.
+- This approach simulates early-stage **volumetric holography** by requiring a single mask to reconstruct multiple target images at different physical depths.
+- True 3D volumetric training (with 3D convolutions) is left for future exploration.
 
 ---
 
