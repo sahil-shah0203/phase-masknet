@@ -6,10 +6,10 @@ This project develops a deep learning model, **PhaseMaskNet**, designed to predi
 The goal is to use these phase masks in **metasurfaces** for **holographic projection** and ultimately accelerate **additive manufacturing** workflows.
 
 This repository contains:
-- `phase_mask_training.ipynb`: Train PhaseMaskNet on cross-sectional slices.
+- `phase_mask_training.ipynb`: Train PhaseMaskNet on single-layer cross-sectional slices.
 - `phase_mask_inference.ipynb`: Load a trained model and generate phase masks without retraining.
-- `phase_mask_multilayer_training.ipynb`: Train a model to predict a single phase mask for multi-layer holographic projection.
-- `phase_mask_multilayer_inference.ipynb`: Load a trained multi-layer model and run predictions.
+- `phase_mask_multilayer_training.ipynb`: Train PhaseMaskNet to handle multi-layer (3-depth) projection.
+- `phase_mask_multilayer_inference.ipynb`: Load and run predictions for multi-layer projections.
 
 ---
 
@@ -18,76 +18,57 @@ This repository contains:
    ```bash
    pip install torch torchvision matplotlib pillow piq
    ```
-2. (Optional) If using Google Colab, mount your Google Drive:
+2. (Optional) Mount Google Drive in Colab:
    ```python
    from google.colab import drive
    drive.mount('/content/drive')
    ```
-3. (Optional) This project was originally developed on **Google Colab Pro** using a paid GPU instance (Tesla T4 or better recommended).
+3. This project was originally developed on **Google Colab Pro** using a Tesla T4 GPU.
 
 ---
 
-## Training PhaseMaskNet
+## Training PhaseMaskNet (2D Single Slice)
 - Open `phase_mask_training.ipynb`.
-- Configure hyperparameters (batch size, learning rate, number of epochs) if needed.
-- Place your cross-sectional `.png` slices into a folder (example structure shown inside notebook).
-- Update `img_dir` path in the code to your dataset.
+- Place cross-sectional `.png` images into a folder.
+- Adjust `img_dir` path to your dataset.
 - Run all cells to train the model.
-- Model weights will be saved to `phase_mask_net.pth`.
-
-**Important Notes:**
-- Current training uses low-resolution (128×128) slices for demonstration.
-- Training was conducted on **Google Colab Pro GPU instances**; local training may require sufficient VRAM (~8GB+ recommended).
-- Future experiments should use 256×256 or 512×512 resolution for sharper outputs.
-- Model converges around 30 epochs for current dataset.
+- Outputs a single phase mask prediction per slice.
 
 ---
 
-## Running Inference
+## Running Inference (2D)
 - Open `phase_mask_inference.ipynb`.
-- Upload the trained `phase_mask_net.pth` file.
-- Load your cross-sectional slice image(s).
-- Run predictions to generate corresponding phase masks.
-
-This allows generating new phase masks without retraining the model.
+- Load the trained `phase_mask_net.pth` weights.
+- Input a cross-sectional slice.
+- Output a phase mask prediction.
 
 ---
 
 ## Multi-Layer Phase Mask Prediction
-In addition to single-slice phase mask generation, this repository also supports **multi-layer phase mask prediction**.
+- `phase_mask_multilayer_training.ipynb` trains the model to predict a phase mask that reconstructs three different slices at different z-heights.
+- `phase_mask_multilayer_inference.ipynb` tests and evaluates multi-depth holographic projections.
 
-- `phase_mask_multilayer_training.ipynb`:  
-  Trains a model to predict a **single phase mask** that reconstructs **three target cross-sections** at different z-heights.
-  
-- `phase_mask_multilayer_inference.ipynb`:  
-  Loads the trained model and predicts a phase mask designed for **multi-layer projection**.
-
-**Important Notes:**
-- The model still uses **2D convolutions** but is trained to satisfy **multi-depth projections**.
-- This approach simulates early-stage **volumetric holography** by requiring a single mask to reconstruct multiple target images at different physical depths.
-- True 3D volumetric training (with 3D convolutions) is left for future exploration.
+This uses angular spectrum propagation to simulate real-world light behavior.
 
 ---
 
 ## Key Parameters
-| Parameter | Description | Recommendation |
-|:----------|:-------------|:---------------|
-| `size` in dataset | Input image size | 128×128 for now; increase to 512×512 for production |
-| `batch_size` | Training batch size | Increase if GPU allows |
-| `learning_rate` | Learning rate | 1e-3 |
-| Model structure | U-Net based | **Do not change** without careful testing |
-| Loss function | SSIM loss | Recommended to keep for perceptual quality |
+| Parameter | Value | Notes |
+|:----------|:------|:------|
+| Image Size | 512×512 | Future work: 1024×1024 |
+| Loss | SSIM + MSE + Gradient | Structural and intensity matching |
+| Model | DeepCGHUNet | U-Net variation |
+| 3D Training? | No (multi-depth only) | Full 3D Conv to come later |
 
 ---
 
 ## Future Work
-- **Increase Input Resolution**: Move to 512×512 or higher fidelity inputs.
-- **Train on Complex Shapes**: Use real-world `.stl` cross sections (not just synthetic spheres).
-- **Full 3D Training**: Extend model to 3D convolutional architectures.
-- **Model Deployment**: Package PhaseMaskNet into a cloud API for faster inference.
+- Higher resolution phase masks (e.g., 1024×1024).
+- Full volumetric (3D) convolution models.
+- Real experimental data training.
+- Phase mask fabrication and testing.
 
 ---
 
 ## Authors
 - Developed collaboratively with AI assistance.
-- For further work, please credit the original PhaseMaskNet model architecture when modifying.
