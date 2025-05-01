@@ -56,7 +56,7 @@ This uses angular spectrum propagation to simulate real-world light behavior.
 | Parameter | Value | Notes |
 |:----------|:------|:------|
 | Image Size | 512×512 | Future work: 1024×1024 |
-| Loss | SSIM + MSE + Gradient | Structural and intensity matching |
+| Loss | MSE + Gradient | Structural and intensity matching |
 | Model | DeepCGHUNet | U-Net variation |
 | 3D Training? | No (multi-depth only) | Full 3D Conv to come later |
 
@@ -71,4 +71,5 @@ This uses angular spectrum propagation to simulate real-world light behavior.
 ---
 
 ## Authors
-- Developed collaboratively with AI assistance.
+- Sahil Shah, Neal Jere, Will Tidwell, Aydin Gomez, Rushil Patange
+- Packaged with AI assistance.
